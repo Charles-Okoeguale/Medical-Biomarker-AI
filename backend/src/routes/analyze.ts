@@ -48,10 +48,34 @@ router.post(
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Unknown error";
       console.error("[analyze] error:", message);
-      res.status(500).json({
-        error: "Analysis failed. Please try again.",
-        detail: message,
-      });
+
+      // Return specific error messages
+      if (message.includes("credit") || message.includes("Insufficient")) {
+        res.status(402).json({
+          error: "API key has insufficient credits. Please add credits to your OpenAI account.",
+          detail: message,
+        });
+      } else if (message.includes("timeout") || message.includes("Deadline")) {
+        res.status(504).json({
+          error: "Request timed out. The analysis took too long. Please try again.",
+          detail: message,
+        });
+      } else if (message.includes("PDF") || message.includes("parse")) {
+        res.status(422).json({
+          error: "Could not read the PDF. Try a different file or ensure it's a valid PDF.",
+          detail: message,
+        });
+      } else if (message.includes("invalid_request_error")) {
+        res.status(400).json({
+          error: "Invalid API request. Check your API key configuration.",
+          detail: message,
+        });
+      } else {
+        res.status(500).json({
+          error: "Analysis failed. Please try again.",
+          detail: message,
+        });
+      }
     }
   }
 );

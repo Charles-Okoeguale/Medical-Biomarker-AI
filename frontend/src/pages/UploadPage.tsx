@@ -39,8 +39,9 @@ export default function UploadPage({ onResult }: UploadPageProps) {
         }
 
         onResult(data as AnalyzeResponse);
-      } catch {
-        setError("Connection failed. Please check your internet and try again.");
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : "Unknown error";
+        setError(`Connection error: ${errorMsg}`);
       } finally {
         setLoading(false);
       }
