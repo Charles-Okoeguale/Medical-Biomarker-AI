@@ -90,6 +90,10 @@ npm run dev
 
 4. **Display results** — Table grouped by category, color-coded, mobile-responsive.
 
+5. **Filter & search** — Filter results by status (Optimal / Normal / Out of Range) and search by biomarker name in real time.
+
+6. **Compare reports** — Upload two lab reports side-by-side to see how biomarker values changed between them.
+
 ---
 
 ## Status Meanings
@@ -139,7 +143,8 @@ biomarker-app/
     ├── src/
     │   ├── pages/
     │   │   ├── UploadPage.tsx             ← drag-and-drop PDF upload
-    │   │   └── ResultsPage.tsx            ← results table grouped by category
+    │   │   ├── ResultsPage.tsx            ← results table with search & status filter
+    │   │   └── ComparisonPage.tsx         ← side-by-side report comparison
     │   ├── components/
     │   │   ├── BiomarkerTable.tsx         ← desktop table + mobile cards
     │   │   ├── PatientHeader.tsx          ← patient info + summary stats
