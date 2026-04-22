@@ -111,12 +111,15 @@ npm run dev
 If deploying to production:
 
 - **Frontend:** AWS CloudFront + S3 (static Vite build served globally)
-- **Backend:** AWS ECS Fargate (stateless container, auto-scaling)
+- **Backend:** AWS Lambda + API Gateway (stateless function, pay-per-invocation)
+- **PDF upload:** S3 presigned URL — client uploads directly to S3, bypassing API Gateway's 6 MB payload limit
+- **Processing trigger:** S3 event triggers the Lambda function on upload
 - **API Key:** AWS Secrets Manager (never in environment variables)
-- **Load Balancer:** AWS ALB (enforces 10 MB file size limit)
 - **Logs:** CloudWatch (request logs, errors, latency)
 
-No database or storage bucket needed — PDFs are processed in memory and never stored.
+No database needed — PDFs are processed in memory by the Lambda function and discarded immediately after the response is returned.
+
+> **Note:** Lambda cold starts add ~1–2s latency after idle periods, which is negligible given the AI extraction step takes ~10s.
 
 ---
 
